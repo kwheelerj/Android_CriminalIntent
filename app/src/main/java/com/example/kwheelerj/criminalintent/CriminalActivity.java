@@ -1,18 +1,18 @@
 package com.example.kwheelerj.criminalintent;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 
-public class CriminalActivity extends AppCompatActivity {
+public class CriminalActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_criminal);
 
-		FragmentManager fm = getSupportFragmentManager();
+		FragmentManager fm = getFragmentManager();
 
 		/* Use the fm to find the fragment created in the xml of the activity (framelayout) */
 		Fragment fragment = fm.findFragmentById(R.id.fragment_container);
