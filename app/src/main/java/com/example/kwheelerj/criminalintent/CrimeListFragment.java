@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -39,9 +40,24 @@ public class CrimeListFragment extends Fragment {
 	/* Inner Class */
 	private class CrimeHolder extends RecyclerView.ViewHolder {
 
+		private Crime mCrime;
+
+		private TextView mTitleTextView;
+		private TextView mDateTextView;
+
 		public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
 			super(inflater.inflate(R.layout.list_item_crime, parent, false));
+
+			mTitleTextView = itemView.findViewById(R.id.crime_title);	/* ViewHolder.itemView */
+			mDateTextView = itemView.findViewById(R.id.crime_date);
 		}
+
+		public void bind(Crime crime) {
+			mCrime = crime;
+			mTitleTextView.setText(mCrime.getTitle());
+			mDateTextView.setText(mCrime.getDate().toString());
+		}
+
 	}
 
 	/* Inner Class */
@@ -60,15 +76,23 @@ public class CrimeListFragment extends Fragment {
 			return new CrimeHolder(layoutInflater, parent);
 		}
 
+		/* The following method is called each time the RecyclerView requests that a
+			given CrimeHolder be bound to a particular crime.
+			NOTE: this is called EVERY time necessary (due to scrolling).
+			How fast (small) this method is affects the performance while
+			quickly scrolling!
+		 */
 		@Override
 		public void onBindViewHolder(@NonNull CrimeHolder crimeHolder, int position) {
-
+			Crime crime = mCrimes.get(position);
+			crimeHolder.bind(crime);
 		}
 
 		@Override
 		public int getItemCount() {
 			return mCrimes.size();
 		}
+
 	}
 
 }
