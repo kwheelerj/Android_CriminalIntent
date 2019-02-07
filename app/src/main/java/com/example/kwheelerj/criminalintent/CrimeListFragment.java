@@ -67,6 +67,35 @@ public class CrimeListFragment extends Fragment {
 
 	}
 
+	/* Inner Class */	/* FOR CHALLENGE */
+	private class SeriousCrimeHolder extends CrimeHolder implements View.OnClickListener {
+
+		private Crime mCrime;
+
+		private TextView mTitleTextView;
+		private TextView mDateTextView;
+
+		public SeriousCrimeHolder(LayoutInflater inflater, ViewGroup parent) {
+			super(inflater, parent);
+			itemView.setOnClickListener(this);
+
+			mTitleTextView = itemView.findViewById(R.id.crime_title);	/* ViewHolder.itemView */
+			mDateTextView = itemView.findViewById(R.id.crime_date);
+		}
+
+		public void bind(Crime crime) {
+			mCrime = crime;
+			mTitleTextView.setText(mCrime.getTitle() + "SERIOUS");
+			mDateTextView.setText(mCrime.getDate().toString());
+		}
+
+		@Override
+		public void onClick(View view) {
+			Toast.makeText(getActivity(), mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
+		}
+
+	}
+
 	/* Inner Class */
 	private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
 
@@ -74,6 +103,12 @@ public class CrimeListFragment extends Fragment {
 
 		public CrimeAdapter(List<Crime> crimes) {
 			mCrimes = crimes;
+		}
+
+		@Override
+		public int getItemViewType(int position) {
+			Crime crime = mCrimes.get(position);
+			return (crime.isRequiresPolice()) ? 1 : 0;	/* docs recommend using id resources */
 		}
 
 		@Override
@@ -85,7 +120,11 @@ public class CrimeListFragment extends Fragment {
 		@Override
 		public CrimeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 			LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-			return new CrimeHolder(layoutInflater, parent);
+			if (viewType == 0) {
+				return new CrimeHolder(layoutInflater, parent);
+			} else {
+				return new SeriousCrimeHolder(layoutInflater, parent);
+			}
 		}
 
 		/* The following method is called each time the RecyclerView requests that a
