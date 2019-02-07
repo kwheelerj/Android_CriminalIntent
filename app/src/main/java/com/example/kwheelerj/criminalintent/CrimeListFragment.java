@@ -76,6 +76,11 @@ public class CrimeListFragment extends Fragment {
 			mCrimes = crimes;
 		}
 
+		@Override
+		public int getItemCount() {
+			return mCrimes.size();
+		}
+
 		@NonNull
 		@Override
 		public CrimeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -93,11 +98,6 @@ public class CrimeListFragment extends Fragment {
 		public void onBindViewHolder(@NonNull CrimeHolder crimeHolder, int position) {
 			Crime crime = mCrimes.get(position);
 			crimeHolder.bind(crime);
-		}
-
-		@Override
-		public int getItemCount() {
-			return mCrimes.size();
 		}
 
 	}
