@@ -12,12 +12,13 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_fragment);
+		setContentView(R.layout.activity_fragment);	// activity_fragment.xml
 
 		FragmentManager fm = getSupportFragmentManager();
 
 		/* Use the fm to find the fragment created in the xml of the activity (framelayout) */
 		Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+		// R.id.fragment_container -> activity_fragment.xml (see note 2)
 		/* If fragment is already in the fm's list, the fm will return in. */
 		/* How could it already exist?  onSaveInstanceState() -> onDestroy() [rotation] */
 		/* When an activity is destroyed, its FragmentManager saves out its list of fragments. */
@@ -27,6 +28,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 		if (fragment == null) {
 			fragment = createFragment();
 			fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
+			// R.id.fragment_container -> activity_fragment.xml (see note 1)
 		}
 
 		/* NOTE on the container view ID:
@@ -34,6 +36,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 		 *	2) Used as a unique identifier for a fragment in the FragmentManager's list.
 		 */
 
-		/* In the CrimeFragment class, the onActivityCreated(..) method is called. */
+		/* In the *Fragment class, the onActivityCreated(..) method is called. */
 	}
 }

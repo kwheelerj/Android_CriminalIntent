@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+// Singleton
 public class CrimeLab {
 
 	private static CrimeLab sCrimeLab;
@@ -37,7 +38,7 @@ public class CrimeLab {
 
 	public Crime getCrime(UUID id) {
 		for (Crime crime : mCrimes) {
-			if (crime.getId() == id) {
+			if (crime.getId().equals(id)) {
 				return crime;
 			}
 		}
