@@ -6,13 +6,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.util.Log;
 
 import java.util.List;
 
@@ -44,7 +43,6 @@ public class CrimeListFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		//Log.d("kwheelerj", "reload_position is " + reload_position);
 		updateUI(reload_position);
 	}
 
@@ -57,7 +55,6 @@ public class CrimeListFragment extends Fragment {
 			mCrimeRecyclerView.setAdapter(mAdapter);
 		} else {
 			//mAdapter.notifyDataSetChanged();
-			//Log.d("kwheelerj", "updateUI(" + position + ")");
 			if (position != -1) {
 				mAdapter.notifyItemChanged(position);
 			} else {
@@ -122,7 +119,6 @@ public class CrimeListFragment extends Fragment {
 			Crime crime = mCrimes.get(position);
 			crimeHolder.bind(crime, position);
 			// The real work of binding is in the CrimeHolder (inner)class.
-			//Log.d("kwheelerj", "CrimeHolder.onBindViewHolder(): " + position);
 		}
 
 	}
@@ -179,10 +175,6 @@ public class CrimeListFragment extends Fragment {
 		public void onClick(View view) {
 			//Toast.makeText(getActivity(), mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
 			//Intent intent = new Intent(getActivity(), CrimeActivity.class);
-			//String mess = "before: " + mCrime.getId();
-			//Log.d("kwheelerj", mess);
-			//Log.d("kwheelerj", "onClick() view.getId() = " + view.getId());
-			//Log.d("kwheelerj", "onClick() view.getVerticalScrollbarPosition() = " + view.getVerticalScrollbarPosition());
 			reload_position = crimePosition;
 			Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
 			startActivity(intent);
