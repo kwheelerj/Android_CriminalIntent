@@ -20,6 +20,7 @@ public class CrimeListFragment extends Fragment {
 
 	private RecyclerView mCrimeRecyclerView;
 	private CrimeAdapter mAdapter;
+	private int reload_position;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,7 +33,7 @@ public class CrimeListFragment extends Fragment {
 		// setLayoutManager is specifically for RecyclerViews - REQUIRED
 		// The LayoutManager will position every item, and define how scrolling works.
 
-		updateUI();
+		updateUI(-1);
 
 		return view;
 	}
@@ -43,10 +44,11 @@ public class CrimeListFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		updateUI();
+		//Log.d("kwheelerj", "reload_position is " + reload_position);
+		updateUI(reload_position);
 	}
 
-	public void updateUI() {
+	public void updateUI(int position) {
 		CrimeLab crimeLab = CrimeLab.get(getActivity());
 		List<Crime> crimes = crimeLab.getCrimes();
 
@@ -54,7 +56,13 @@ public class CrimeListFragment extends Fragment {
 			mAdapter = new CrimeAdapter(crimes);
 			mCrimeRecyclerView.setAdapter(mAdapter);
 		} else {
-			mAdapter.notifyDataSetChanged();
+			//mAdapter.notifyDataSetChanged();
+			//Log.d("kwheelerj", "updateUI(" + position + ")");
+			if (position != -1) {
+				mAdapter.notifyItemChanged(position);
+			} else {
+				mAdapter.notifyDataSetChanged();
+			}
 		}
 
 	}
@@ -112,8 +120,9 @@ public class CrimeListFragment extends Fragment {
 			 *	hooking it up to a widget.
 			 */
 			Crime crime = mCrimes.get(position);
-			crimeHolder.bind(crime);
+			crimeHolder.bind(crime, position);
 			// The real work of binding is in the CrimeHolder (inner)class.
+			//Log.d("kwheelerj", "CrimeHolder.onBindViewHolder(): " + position);
 		}
 
 	}
@@ -136,6 +145,7 @@ public class CrimeListFragment extends Fragment {
 		private TextView mTitleTextView;
 		private TextView mDateTextView;
 		private ImageView mCrimeSolved;
+		private int crimePosition;
 
 		/* The constructor is called by the adapter's onCreateViewHolder(..)
 		 *	Pulling all of the widgets you are interested in only needs to happen once;
@@ -157,19 +167,23 @@ public class CrimeListFragment extends Fragment {
 			mCrimeSolved = itemView.findViewById(R.id.crime_solved);
 		}
 
-		public void bind(Crime crime) {
+		public void bind(Crime crime, int position) {
 			mCrime = crime;
 			mTitleTextView.setText(mCrime.getTitle());
 			mDateTextView.setText(mCrime.getDate().toString());
 			mCrimeSolved.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
+			crimePosition = position;
 		}
 
 		@Override
 		public void onClick(View view) {
 			//Toast.makeText(getActivity(), mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
 			//Intent intent = new Intent(getActivity(), CrimeActivity.class);
-			String mess = "before: " + mCrime.getId();
-			Log.d("kwheelerj", mess);
+			//String mess = "before: " + mCrime.getId();
+			//Log.d("kwheelerj", mess);
+			//Log.d("kwheelerj", "onClick() view.getId() = " + view.getId());
+			//Log.d("kwheelerj", "onClick() view.getVerticalScrollbarPosition() = " + view.getVerticalScrollbarPosition());
+			reload_position = crimePosition;
 			Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
 			startActivity(intent);
 		}

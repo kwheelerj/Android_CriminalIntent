@@ -14,8 +14,8 @@ public class CrimeActivity extends SingleFragmentActivity {
 
 	public static Intent newIntent(Context packageContext, UUID crimeId) {
 		Intent intent = new Intent(packageContext, CrimeActivity.class);
-		String mess = "after: " + crimeId.toString();
-		Log.d("kwheelerj", mess);
+		//String mess = "after: " + crimeId.toString();
+		//Log.d("kwheelerj", mess);
 		intent.putExtra(EXTRA_CRIME_ID, crimeId);
 		return intent;
 		/* Now the crimeId is safely stashed in the intent that belongs to CrimeActivity.  But,
